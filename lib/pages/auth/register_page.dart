@@ -1,26 +1,23 @@
-// ignore_for_file: unnecessary_const
-
-import 'package:chat_app_firebase/pages/auth/register_page.dart';
-import 'package:chat_app_firebase/widgets/widgets.dart';
+import 'package:chat_app_firebase/pages/auth/login_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+import '../../widgets/widgets.dart';
+
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final formKey = GlobalKey<FormState>();
   String email = "";
   String password = "";
+  String fullName = "";
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -37,13 +34,27 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  "Login to see your stocks",
+                  "Register to create account",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
                 ),
                 Image.asset(
                   "assets/login1.png",
                   width: double.infinity,
                 ),
+                TextFormField(
+                  decoration: textInputDecoration.copyWith(
+                      labelText: "Full Name",
+                      prefixIcon: Icon(Icons.person_outline)),
+                  onChanged: (val) {
+                    setState(() {
+                      fullName = val;
+                    });
+                  },
+                  validator: (val) {
+                    return val!.isNotEmpty ? null : "Name cannot be empty";
+                  },
+                ),
+                const SizedBox(height: 15),
                 TextFormField(
                   decoration: textInputDecoration.copyWith(
                       labelText: "Email",
@@ -84,29 +95,29 @@ class _LoginPageState extends State<LoginPage> {
                   width: 150,
                   child: ElevatedButton(
                     onPressed: () {
-                      login();
+                      register();
                     },
                     style: ElevatedButton.styleFrom(
                         // elevation: 0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15))),
                     child: Text(
-                      "Sign In",
+                      "Register",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
                 SizedBox(height: 10),
                 Text.rich(TextSpan(
-                  text: "Dont have an account? ",
+                  text: "Already have an account? ",
                   style: TextStyle(color: Colors.black),
                   children: <TextSpan>[
                     TextSpan(
-                        text: "Register here",
+                        text: "Login now",
                         style: TextStyle(decoration: TextDecoration.underline),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            nextScreen(context, RegisterPage());
+                            nextScreen(context, LoginPage());
                           })
                   ],
                 ))
@@ -118,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  login() {
+  void register() {
     if (formKey.currentState!.validate()) {}
   }
 }
